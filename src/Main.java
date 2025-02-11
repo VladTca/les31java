@@ -4,19 +4,33 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
+        List<MailDeliveryService> services = getMailDeliveryServices();
+
+        Sender sender = new Sender();
+        sender.send(choiceService(services));
+
+    }
+
+    private static List<MailDeliveryService> getMailDeliveryServices() {
+        List<MailDeliveryService> services = new ArrayList<>();
+        services.add(new DHL());
+        services.add(new Email());
+        services.add(new Pigeon());
+        return services;
+    }
+
+    public static MailDeliveryService choiceService(List<MailDeliveryService> services ) {
+        System.out.println("Какую службу доставки использовать? (Pigeon, Email, DHL)");
         Scanner sc = new Scanner(System.in);
         String deliveryService = sc.nextLine();
-        DHL dhl = new DHL();
-        Email email = new Email();
-        Pigeon pigeon = new Pigeon();
-        if (deliveryService.equalsIgnoreCase("Pigeon")) {
-            pigeon.sendMail();
-        } else if (deliveryService.equalsIgnoreCase("DHL")) {
-            dhl.sendMail();
-        } else if (deliveryService.equalsIgnoreCase("Email")) {
-            email.sendMail();
-        } else {
-            System.out.println("Неизвестная служба доставки");
+        sc.close();
+        for (MailDeliveryService service : services) {
+            if (service.getClass().getSimpleName().equalsIgnoreCase(deliveryService)) {
+                return service;
+            }
         }
-
-}}
+        return new MailDeliveryService() {
+        };
+    }
+}
