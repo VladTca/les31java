@@ -7,9 +7,13 @@ public class Main {
 
         List<MailDeliveryService> services = getMailDeliveryServices();
 
+        sendingMail(services);
+
+    }
+
+    private static void sendingMail(List<MailDeliveryService> services) {
         Sender sender = new Sender();
         sender.send(choiceService(services));
-
     }
 
     private static List<MailDeliveryService> getMailDeliveryServices() {
